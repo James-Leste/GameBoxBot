@@ -1,0 +1,147 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - get_help_list
+  - choose_sub #选择订阅分支
+  - problem_report #选择投诉分支
+  - sub_detail #提供sub_number
+  - check_exist_sub #选择sub之后选择查询现有的sub信息
+  - check_new_plans #选择sub之后选择新的plan
+  - monthly_plan #选择月租
+  - annual_plan #选择年租
+  - free_plan #选择两星期免费
+  - give_name
+  - payment_problem
+  - company_information
+  - human_service
+
+responses:
+  utter_greet:
+  - text: "Hey, so nice of you to bother me, I am an AI assistant here to help you!"
+  - text: "Hey, what can I do for you ?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, I would check it out for you right now"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+
+  utter_help_list:
+  - text: "Here are several things I can do for you:\n
+          1. Game subscription\n
+          2. Problem report\n"
+    buttons:
+      - title: "Game subscription"
+        payload: '/choose_sub'
+      - title: "Problem report"
+        payload: '/problem_report'
+
+  utter_check_sub:
+    - text: "Do you like to check your existing subscription or pick a new plan?"
+      buttons:
+        - title: "check existing subscription plans"
+          payload: '/check_exist_sub'
+        - title: "choose new plans"
+          payload: '/check_new_plans'
+
+
+  utter_check_new_plans:
+    - text: "here now we have three kinds of plans:\n"
+
+
+  utter_monthly_plan:
+    - text: "monthly plan selected."
+
+  utter_annual_plan:
+    - text: "annual plan selected."
+
+  utter_free_plan:
+    - text: "free plan selected "
+
+  utter_start_problem_report:
+    - text: "What problem do you want to report"
+      buttons:
+        - title: "payment problems"
+          payload: '/payment_problems'
+        - title: "company information"
+          payload: '/company_information'
+        - title: "Human service"
+          payload: '/human_service'
+
+  utter_choose_console:
+    - text: "You need to first choose your console\n
+            \t A. GameBox X\n
+            \t B. GameBox Pro\n
+            \t C. Video Games\n"
+
+  utter_ask_sub_detail:
+    - text: "Please provide the subscription SID(one and only)."
+
+  utter_ask_user_name:
+    - text: "Please enter your user name (no more than 6 digits)"
+
+  utter_payment_problem:
+    - text: "payment problem"
+
+  utter_company_information:
+    - text: "company information"
+
+  utter_human_service:
+    - text: "Please contact 4000-8888"
+
+slots:
+  sub_number:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: sub_number
+  sub_plan:
+    type: categorical
+    values:
+      - monthly_plan
+      - annual_plan
+      - free_plan
+    mappings:
+      - type: custom
+  user_name:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: user_name
+
+entities:
+  - sub_number
+  - user_name
+  - sub_plan
+
+
+actions:
+  - sub_enquiry
+  - add_plan
+  - ask_name
+
+forms:
+  name_form:
+    required_slots:
+      - user_name
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
