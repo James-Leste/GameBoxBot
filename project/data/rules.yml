@@ -1,0 +1,31 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+#- rule: get help and ask username
+#  steps:
+#    - or:
+#        - intent: greet
+#        - intent: get_help_list
+#    - action: utter_greet
+#    - action: name_form
+#    - active_loop: name_form
+#    - slot_was_set:
+#        - user_name: user_name
+#    - active_loop: null
+#    - action: utter_help_list
+#
+#- rule: check game subscription #在初始菜单中选择订阅问题
+#  steps:
+#    - intent: choose_sub
+#    - action: utter_check_sub

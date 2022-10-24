@@ -1,0 +1,121 @@
+version: "3.1"
+
+stories:
+
+  - story: hi
+    steps:
+      - intent: greet
+      - action: utter_greet
+
+
+  - story: get help and ask user name
+    steps:
+      - or:
+          - intent: greet
+          - intent: get_help_list
+      - action: utter_greet
+      - action: name_form
+      - active_loop: name_form
+      - slot_was_set:
+          - user_name: user_name
+      - active_loop: null
+      - action: utter_help_list
+
+  - story: check game subscription #在初始菜单中选择订阅问题
+    steps:
+      - intent: choose_sub
+      - action: utter_check_sub
+
+  - story: problem report #在初始菜单中选择投诉问题
+    steps:
+      - intent: problem_report
+      - action: utter_start_problem_report
+
+    #再选择订阅问题之后选择查看已有的订阅plan
+  - story: check existing subscription plans
+    steps:
+      - intent: check_exist_sub
+      - action: utter_ask_sub_detail
+      - intent: sub_detail
+      - slot_was_set:
+          - sub_number: sub_number
+
+    #添加monthly plan
+  - story: subscribe to a monthly plan
+    steps:
+      - intent: check_new_plans
+      - action: utter_check_new_plans
+      - intent: monthly_plan
+      - slot_was_set:
+          - sub_plan: "monthly_plan"
+      - action: utter_monthly_plan
+      - action: add_plan
+
+   #添加annual plan
+  - story: subscribe to a annual plan
+    steps:
+      - intent: check_new_plans
+      - action: utter_check_new_plans
+      - intent: annual_plan
+      - slot_was_set:
+          - sub_plan: "annual_plan"
+      - action: utter_annual_plan
+      - action: add_plan
+
+    #添加free plan
+  - story: subscribe to a free plan
+    steps:
+      - intent: check_new_plans
+      - action: utter_check_new_plans
+      - intent: free_plan
+      - slot_was_set:
+          - sub_plan: "free_plan"
+      - action: utter_free_plan
+      - action: add_plan
+
+
+#- story: choose monthly plan
+#  steps:
+#    - checkpoint: check_plan_selection
+#    - intent: monthly_plan
+#    - action: utter_monthly_plan
+#    - checkpoint: plan_selection_finished
+#
+#- story: choose annual plan
+#  steps:
+#    - checkpoint: check_plan_selection
+#    - intent: annual_plan
+#    - action: utter_annual_plan
+#    - checkpoint: plan_selection_finished
+#
+#- story: choose free plan
+#  steps:
+#    - checkpoint: check_plan_selection
+#    - intent: free_plan
+#    - action: utter_free_plan
+#    - checkpoint: plan_selection_finished
+#
+#- story: finish plan selection
+#  steps:
+#    - checkpoint: plan_selection_finished
+#    - intent: goodbye
+#    - action: utter_goodbye
+
+#- story: check_exist_sub (happy path)
+#  steps:
+#    - intent: greet
+#    - action: utter_greet
+#    - action: utter_help_list
+#    - intent: choose_sub
+#    - action: utter_check_sub
+#    - intent: check_exist_sub
+#    - action: utter_ask_sub_detail
+#    - intent: sub_detail
+#    - slot_was_set:
+#        - order_number: order_number
+
+
+
+
+
+
