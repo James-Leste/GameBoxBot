@@ -14,6 +14,7 @@ intents:
   - sub_detail #提供sub_number
   - check_exist_sub #选择sub之后选择查询现有的sub信息
   - check_new_plans #选择sub之后选择新的plan
+  - choose_plan #选择所有plan里的一个
   - monthly_plan #选择月租
   - annual_plan #选择年租
   - free_plan #选择两星期免费
@@ -62,9 +63,15 @@ responses:
           payload: '/check_new_plans'
 
 
-  utter_check_new_plans:
+  utter_ask_sub_plan:
     - text: "here now we have three kinds of plans:\n"
-
+      buttons:
+        - title: "monthly plan (30 days)"
+          payload: '/choose_plan{{"sub_plan" : "monthly_plan"}}'
+        - title: "annual plan (360 days)"
+          payload: '/choose_plan{{"sub_plan" : "annual_plan"}}'
+        - title: "free trial (14 days)"
+          payload: '/choose_plan{{"sub_plan" : "free_trial"}}'
 
   utter_monthly_plan:
     - text: "monthly plan selected."
@@ -117,9 +124,12 @@ slots:
     values:
       - monthly_plan
       - annual_plan
-      - free_plan
+      - free_trial
     mappings:
-      - type: custom
+      - type: from_entity
+        entity: sub_plan
+        conditions:
+        - active_loop: new_plan_form
   user_name:
     type: text
     mappings:
@@ -141,6 +151,9 @@ forms:
   name_form:
     required_slots:
       - user_name
+  new_plan_form:
+    required_slots:
+      - sub_plan
 
 session_config:
   session_expiration_time: 60

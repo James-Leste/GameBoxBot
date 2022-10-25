@@ -15,12 +15,6 @@ stories:
     - active_loop: null
     - action: utter_help_list
 
-- story: check game subscription #在初始菜单中选择订阅问题
-  steps:
-    - intent: choose_sub
-    - action: utter_check_sub
-    - checkpoint: check_new
-
 - story: problem report #在初始菜单中选择投诉问题
   steps:
     - intent: problem_report
@@ -45,9 +39,16 @@ stories:
     - intent: human_service
     - action: utter_human_service
 
+- story: check game subscription #在初始菜单中选择订阅问题
+  steps:
+    - intent: choose_sub
+    - action: utter_check_sub
+    - checkpoint: check_exist_or_new
+
   #再选择订阅问题之后选择查看已有的订阅plan
 - story: check existing subscription plans
   steps:
+    - checkpoint: check_exist_or_new
     - intent: check_exist_sub
     - action: utter_ask_sub_detail
     - intent: sub_detail
@@ -55,41 +56,57 @@ stories:
         - sub_number: sub_number
     - action: sub_enquiry
 
-  #添加monthly plan
-- story: subscribe to a monthly plan
+- story: subscribe to a new plan
   steps:
-    - checkpoint: check_new
+    - checkpoint: check_exist_or_new
     - intent: check_new_plans
-    - action: utter_check_new_plans
-    - intent: monthly_plan
+    - action: new_plan_form
+    - active_loop: new_plan_form
     - slot_was_set:
-        - sub_plan: monthly_plan
-#    - action: utter_monthly_plan
+      - requested_slot: sub_plan
+    - slot_was_set:
+      - sub_plan: monthly_plan
+    - slot_was_set:
+      - requested_slot: null
+    - active_loop: null
     - action: add_plan
 
- #添加annual plan
-- story: subscribe to a annual plan
-  steps:
-    - checkpoint: check_new
-    - intent: check_new_plans
-    - action: utter_check_new_plans
-    - intent: annual_plan
-    - slot_was_set:
-        - sub_plan: annual_plan
-#    - action: utter_annual_plan
-    - action: add_plan
 
-  #添加free plan
-- story: subscribe to a free plan
-  steps:
-    - checkpoint: check_new
-    - intent: check_new_plans
-    - action: utter_check_new_plans
-    - intent: free_plan
-    - slot_was_set:
-        - sub_plan: free_plan
-#    - action: utter_free_plan
-    - action: add_plan
+#  #添加monthly plan
+#- story: subscribe to a monthly plan
+#  steps:
+#    - checkpoint: check_new
+#    - intent: check_new_plans
+#    - action: utter_check_new_plans
+#    - intent: monthly_plan
+#    - slot_was_set:
+#        - sub_plan: monthly_plan
+##    - action: utter_monthly_plan
+#    - action: add_plan
+#
+# #添加annual plan
+#- story: subscribe to a annual plan
+#  steps:
+#    - checkpoint: check_new
+#    - intent: check_new_plans
+#    - action: utter_check_new_plans
+#    - intent: annual_plan
+#    - slot_was_set:
+#        - sub_plan: annual_plan
+##    - action: utter_annual_plan
+#    - action: add_plan
+#
+#  #添加free plan
+#- story: subscribe to a free plan
+#  steps:
+#    - checkpoint: check_new
+#    - intent: check_new_plans
+#    - action: utter_check_new_plans
+#    - intent: free_plan
+#    - slot_was_set:
+#        - sub_plan: free_plan
+##    - action: utter_free_plan
+#    - action: add_plan
 
 
 #- story: choose monthly plan

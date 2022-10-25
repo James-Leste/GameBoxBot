@@ -1,0 +1,6 @@
+{
+  "rule_only_slots": [
+    "sub_plan"
+  ],
+  "rule_only_loops": []
+}

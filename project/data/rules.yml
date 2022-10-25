@@ -12,6 +12,22 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: activate new_plan_form
+  steps:
+    - intent: check_new_plans
+    - action: new_plan_form
+    - active_loop: new_plan_form
+
+- rule: deactivate new_plan_form
+  condition:
+    - active_loop: new_plan_form
+  steps:
+    - action: new_plan_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: add_plan
+
 #- rule: get help and ask username
 #  steps:
 #    - or:
